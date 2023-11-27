@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Simply Finance - Proyecto Final</title>
+    <link rel="icon" href="skam.ico">
+    
+    
+         
+    <style> /*el coso de la cuenta*/
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background-color: #f0f0f0; /* Color de fondo */
+        }
+
+        nav {
+            background-color: #f0f0f0; 
+        }
+
+        .container-fluid {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .contenedor {
+            text-align: center; 
+            background-color: #add8e6; 
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            margin: 20px; /* margen con la ventana */
+        }
+
+        h1 {
+            color: #333;
+            margin-top: 0;
+        }
+
+        .saldo {
+            color: #333;
+            font-size: 24px;
+        }
+
+        .d-flex p-2 {
+            text-align: center;
+        }
+
+        .barra-baja {
+            background-color: #f1f1f1;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .barra-baja input[type="text"] {
+            padding: 5px;
+            width: 200px;
+        }
+
+        canvas {
+            max-height: 200px; /* altura máxima  */
+            width: 100%; /* es lo que ocupa del contenedor el grafico */
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">$imply Finance</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarScroll">
+            <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+              
+              <li class="nav-item">
+                <a class="nav-link" href="Cuenta.html">Crea tu cuenta</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="Calendario.html" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Tus Finanzas
+                </a>
+                
+            </ul>
+            <form class="d-flex" role="search">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
+      </div>
+    </nav>
+
+  <div class="contenedor">
+    <h1>Saldo en Cuenta</h1>
+    <div class="saldo">$56,204</div>
+  </div>
+
+        <div class="d-flex p-2">
+        <div class="fixed-bottom">
+        <h4>Tiempo empleado...</h4>
+        <canvas id="graficoBarras" width="10" height="20"></canvas>
+        <script>
+        // le da el contexto al canvas
+        var ctx = document.getElementById('graficoBarras').getContext('2d');
+
+        // Datos del gráfico de barras
+        var data = {
+          labels: ['Leyendo', 'Viendo el celular', 'Caminando', 'Durmiendo', 'Trabajando'],
+          datasets: [{
+            label: ' Semana 1',
+        
+            data: [5, 15, 10, 50, 20],
+            backgroundColor: ['red', 'blue', 'green', 'orange', 'purple'],
+          }]
+            };
+
+        //config del grafico
+
+        var options = {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        };
+
+        //crea el grafrico de barras
+        var myBarChart = new Chart(ctx, {
+          type: 'bar',
+          data: data,
+          options: options
+        });
+      </script>
+    </div>
+  </div>
+
+</body>
+</html>

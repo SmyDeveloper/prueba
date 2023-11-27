@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Calendario y Gastos</title>
+    <link rel="icon" href="skam.ico">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js">
+</head>
+<body>
+
+<div class="calendar" id="calendar">
+    <div class="calendar-header" id="monthYear"></div>
+    <div class="calendar-controls">
+        <button class="color" onclick="prevMonth()">Mes Anterior</button>
+        <button class="color" onclick="nextMonth()">Mes Siguiente</button>
+    </div>
+    <div class="calendar-days" id="calendarDays"></div>
+</div>
+
+<div class="gastos-chart" id="gastosChart">
+    <canvas id="gastosCanvas"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const calendar = document.getElementById("calendar");
+    const monthYearElement = document.getElementById("monthYear");
+    const calendarDays = document.getElementById("calendarDays");
+    const gastosChart = document.getElementById("gastosChart");
+    const gastosCanvas = document.getElementById("gastosCanvas").getContext("2d");
+
+    let currentDate = new Date();
+
+    function generateCalendar() {
+        const currentMonth = currentDate.getMonth();
+        const currentYear = currentDate.getFullYear();
+        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+        const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
+
+        monthYearElement.textContent = `${getMonthName(currentMonth)} ${currentYear}`;
+
+       
+        calendarDays.innerHTML = "";
+
+        for (let i = 1; i <= daysInMonth + firstDayOfMonth; i++) {
+            const day = document.createElement("div");
+            day.classList.add("day");
+            if (i > firstDayOfMonth) {
+                const dayNumber = i - firstDayOfMonth;
+                day.textContent = dayNumber;
+
+                const eventMarker = document.createElement("span");
+                eventMarker.classList.add("event-marker");
+                const key = `${currentYear}-${currentMonth + 1}-${dayNumber}`;
+                if (localStorage.getItem(key)) {
+                    eventMarker.classList.add("has-event");
+                }
+                day.appendChild(eventMarker);
+
+                day.addEventListener("click", () => showEventModal(currentYear, currentMonth, dayNumber));
+            }
+            calendarDays.appendChild(day);
+        }
+    }
+
+    function getMonthName(month) {
+        const months = [
+            "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+        ];
+        return months[month];
+    }
+
+    function prevMonth() {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        generateCalendar();
+    }
+
+    function nextMonth() {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        generateCalendar();
+    }
+
+    function showEventModal(year, month, day) {
+        const key = `${year}-${month + 1}-${day}`;
+        const storedEvent = localStorage.getItem(key);
+        if (storedEvent) {
+            alert(`Nota para ${getMonthName(month)} ${day}, ${year}:\n${storedEvent}`);
+        } else {
+            const eventText = prompt(`AÃ±adir nota para ${getMonthName(month)} ${day}, ${year}:`);
+            if (eventText !== null) {
+                localStorage.setItem(key, eventText);
+                generateCalendar();
+            }
+        }
+    }
+
+    generateCalendar();
+
+
+    const gastosData = {
+        labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"],
+        datasets: [
+            {
+                label: "Gastos Mes Actual",
+                backgroundColor: "rgba(75, 192, 192, 0.2)",
+                borderColor: "rgba(75, 192, 192, 1)",
+                borderWidth: 1,
+                data: [65, 59, 80, 81, 56, 55],
+            },
+            {
+                label: "Gastos Mes Anterior",
+                backgroundColor: "rgba(255, 99, 132, 0.2)",
+                borderColor: "rgba(255, 99, 132, 1)",
+                borderWidth: 1,
+                data: [28, 48, 40, 19, 86, 27],
+            },
+        ],
+    };
+
+    const gastosOptions = {
+        scales: {
+            y: {
+                beginAtZero: true,
+            },
+        },
+    };
+
+    new Chart(gastosCanvas, {
+        type: "bar",
+        data: gastosData,
+        options: gastosOptions,
+    });
+</script>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        background-color: #f0f0f0; 
+    }
+
+    nav {
+        background-color: #add8e6; 
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        position: relative;
+        bottom: 0;
+        width: 100%;
+    }
+
+    a {
+        color: #333;
+        text-decoration: none;
+        font-size: 18px;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+</style>
+</head>
+
+<body>
+
+<nav>
+    <a href="index.html">Inicio</a>
+</nav>
+
+</body>
+</html>
+
+
+</body>
+</html>
